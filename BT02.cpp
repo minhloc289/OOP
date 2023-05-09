@@ -34,18 +34,18 @@ public:
 		}
 	}
 
-	string nxbSGK() {
-		return nxb;
-	}
+	string getNXB(){
+        return nxb;
+    }
 
-	void Xuat() {
-		cout << "Ma sach: " << ma << endl;
-		cout << "Ten sach: " << tensach << endl;
-		cout << "Ten nha xuat ban: " << nxb << endl;
-		cout << "So luong: " << soluong << endl;
-		cout << "Don gia: " << price << endl;
-		cout << "Tinh trang (0/1): " << tinhtrang << endl;
-	}
+	void Xuat(){
+        cout << "Ma sach: " << ma << endl;
+        cout << "Ten sach: " << tensach << endl;
+        cout << "Nha xuat ban: " << nxb << endl;
+        cout << "So luong: " << soluong << endl;
+        cout << "Don gia: " << price << endl;
+        cout << "Tinh trang (0/1): " << tinhtrang << endl;
+    }
 };
 
 class SachThamKhao {
@@ -70,7 +70,7 @@ public:
 	}
 
 	float ThanhTienSTK() {
-		return soluong * price + tax;
+		return (soluong * price) + tax;
 	}
 
 	void Xuat() {
@@ -96,8 +96,8 @@ public:
 		n = m = 0;
 	}
 	~QuanLiThuVien() {
-		delete[]danhsachSGK;
-		delete[]danhsachSTK;
+		delete[] danhsachSGK;
+		delete[] danhsachSTK;
 	}
 
 	void NhapDanhSachSGK() {
@@ -108,7 +108,6 @@ public:
 			string ma, tensach, nxb;
 			int soluong;
 			float price;
-			float thanhtien;
 			int tinhtrang;
 
 			cout << "Nhap ma sach: ";
@@ -138,7 +137,7 @@ public:
 	void NhapDanhSachSTK() {
 		cout << "Nhap danh sach STK: ";
 		cin >> m;
-		danhsachSTK = new SachThamKhao[n];
+		danhsachSTK = new SachThamKhao[m];
 		for (int i = 0; i < m; i++) {
 			string ma, tensach, nxb;
 			int soluong;
@@ -202,36 +201,43 @@ public:
 
 	void CheapestSGK() {
 		int min = danhsachSGK[0].ThanhTienSGK();
+        int index = 0;
 		for (int i = 1; i < n; i++) {
-			float thanhTien = danhsachSGK[i].ThanhTienSGK();
-			if (thanhTien < min) {
-				min = danhsachSGK[i].ThanhTienSGK();
+			if (danhsachSGK[i].ThanhTienSGK() < min) {
+				index = i;
 			}
-			danhsachSGK[i].Xuat();
 		}
+        danhsachSGK[index].Xuat();
 	}
 
 	void CheapestSTK() {
 		int min = danhsachSTK[0].ThanhTienSTK();
+        int index = 0;
 		for (int i = 1; i < m; i++) {
 			if (danhsachSTK[i].ThanhTienSTK() < min) {
-				min = danhsachSTK[i].ThanhTienSTK();
+				index = i;
 			}
-			danhsachSTK[i].Xuat();
 		}
+        danhsachSTK[index].Xuat();
 	}
 	
-	void FindSGK() {
-		string nxb;
-		cout << "Nhap ten nha xuat ban sach muon tim: ";
-		cin.ignore();
-		getline(cin, nxb);
-		for (int i = 0; i < n; i++) {
-			if (danhsachSGK[i].nxbSGK() == nxb) {
-				danhsachSGK[i].Xuat();
-			}
-		}
-	}
+	void FindSGK(){
+        string NXB;
+        cout << "Nhap ten nha xuat ban: ";
+        int flag = 0;
+        cin.ignore();
+        getline(cin, NXB);
+        for (int i = 0; i < n; i++){
+            if (NXB == danhsachSGK[i].getNXB()){
+                danhsachSGK[i].Xuat();
+                flag = 1;
+            }
+
+        }
+        if (flag == 0){
+            cout << "Khong tim thay nha xuat ban nay!";
+        }
+    }
 	
 };
 
@@ -264,7 +270,6 @@ int main() {
 	qltv.CheapestSTK();
 	cout << endl;
 
-	
 	qltv.FindSGK();
 	return 0;
 }
